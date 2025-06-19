@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: auto;
+        }
+        .cv-container {
+            width: 100%;
+            min-height: 100vh;
+            background: white;
+            box-shadow: none;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        .photo-placeholder {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            border: 4px solid rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            text-align: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .profile-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        .header-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .name-title-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .name {
+            font-size: 44px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .title {
+            font-size: 26px;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+        .contact {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            font-size: 16px;
+            justify-items: center;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .contact-item a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .contact-item a:hover {
+            text-decoration: underline;
+            opacity: 0.8;
+        }
+        .main-content {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 0;
+            flex: 1;
+            min-height: calc(100vh - 200px);
+        }
+        .sidebar {
+            background: #f8f9fa;
+            padding: 40px 30px;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+        }
+        .content {
+            padding: 40px;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+        }
+        .section {
+            margin-bottom: 35px;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 20px;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+        .job-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            margin-top: 40px;
+            font-size: 16px;
+        }
+        .job-header:first-of-type {
+            margin-top: 0;
+        }
+        .project-title {
+            font-weight: 700;
+            color: #5a67d8;
+            margin: 15px 0 10px 0;
+            font-size: 16px;
+        }
+        .bullet-point {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.5;
+        }
+        .bullet-point::before {
+            content: '▸';
+            color: #667eea;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        .skills-category {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .skills-label {
+            font-weight: 700;
+            color: #667eea;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .skills-content {
+            color: #5a6c7d;
+            line-height: 1.5;
+        }
+        .education-header {
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+        .education-details {
+            color: #7a8a9a;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        .languages-grid {
+            display: grid;
+            gap: 10px;
+        }
+        .language-item {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .language-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .language-level {
+            color: #7a8a9a;
+            font-size: 14px;
+        }
+        .soft-skills-grid {
+            display: grid;
+            gap: 15px;
+        }
+        .soft-skill-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .soft-skill-title {
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        .certification-item {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .icon {
+            margin-right: 8px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 25px;
+                padding: 30px 20px;
+            }
+            .photo-placeholder {
+                width: 160px;
+                height: 160px;
+            }
+            .name {
+                font-size: 36px;
+            }
+            .title {
+                font-size: 22px;
+            }
+            .contact {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                max-height: none;
+                overflow-y: visible;
+            }
+            .content {
+                max-height: none;
+                overflow-y: visible;
+                padding: 30px 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                padding: 20px 15px;
+            }
+            .photo-placeholder {
+                width: 140px;
+                height: 140px;
+            }
+            .name {
+                font-size: 30px;
+            }
+            .title {
+                font-size: 20px;
+            }
+            .sidebar {
+                padding: 30px 20px;
+            }
+            .content {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cv-container">
+        <div class="header">
+            <div class="photo-placeholder">
+                <img src="Tatiana.jpg" alt="Profile Photo" class="profile-photo">
+            </div>
+            <div class="header-content">
+                <div class="name-title-section">
+                    <div class="name">TATIANA TIGULIOVA</div>
+                    <div class="title">Full Stack Software Engineer</div>
+                </div>
+                <div class="contact">
+                    <div class="contact-item">
+                        <span class="icon">📧</span>
+                        <a href="mailto:tanyatsy00@gmail.com">tanyatsy00@gmail.com</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="icon">📱</span>
+                        <span>+373 69033558</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="icon">🔗</span>
+                        <a href="https://github.com/Tanyatsy" target="_blank">GitHub Profile</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="icon">💼</span>
+                        <a href="https://www.linkedin.com/in/tatiana-tiguliova-0b6004177" target="_blank">LinkedIn Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="section">
+                    <div class="section-title">Languages</div>
+                    <div class="languages-grid">
+                        <div class="language-item">
+                            <div class="language-name">Russian</div>
+                            <div class="language-level">Native</div>
+                        </div>
+                        <div class="language-item">
+                            <div class="language-name">Romanian</div>
+                            <div class="language-level">2nd Language</div>
+                        </div>
+                        <div class="language-item">
+                            <div class="language-name">English</div>
+                            <div class="language-level">B2 Level</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Technical Skills</div>
+                    <div class="skills-category">
+                        <div class="skills-label">Frontend</div>
+                        <div class="skills-content">Vue 3, Angular, Vue.js, KnockoutJS, AngularJS, Telerik, Pinia, TypeScript</div>
+                    </div>
+                    <div class="skills-category">
+                        <div class="skills-label">Backend</div>
+                        <div class="skills-content">.NET (C#), ASP.NET, Java, Scala, Python, Node.js</div>
+                    </div>
+                    <div class="skills-category">
+                        <div class="skills-label">Database & Storage</div>
+                        <div class="skills-content">SQL Server, PostgreSQL, MongoDB, CosmosDB, Redis</div>
+                    </div>
+                    <div class="skills-category">
+                        <div class="skills-label">Cloud & DevOps</div>
+                        <div class="skills-content">Azure (Functions, Service Bus, Key Vault, Search, App Insights), Terraform, Azure DevOps YAML Pipelines, Docker</div>
+                    </div>
+                    <div class="skills-category">
+                        <div class="skills-label">APIs & Integration</div>
+                        <div class="skills-content">GraphQL, REST APIs, Swagger, Twilio, WhatsApp, Telegram, Outlook, Google Calendar</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Soft Skills</div>
+                    <div class="soft-skills-grid">
+                        <div class="soft-skill-item">
+                            <div class="soft-skill-title">Leadership & Mentoring</div>
+                            <div>Pair programming, onboarding new team members</div>
+                        </div>
+                        <div class="soft-skill-item">
+                            <div class="soft-skill-title">Problem-Solving</div>
+                            <div>Immediate issue resolution under pressure</div>
+                        </div>
+                        <div class="soft-skill-item">
+                            <div class="soft-skill-title">Communication</div>
+                            <div>Strong interpersonal and professional skills</div>
+                        </div>
+                        <div class="soft-skill-item">
+                            <div class="soft-skill-title">Collaboration</div>
+                            <div>Cross-team collaboration, stakeholder communication</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Certifications</div>
+                    <div class="certification-item">
+                        🎓 Azure Certification<br>
+                        <small>In Progress</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="section">
+                    <div class="section-title">Education</div>
+                    <div class="education-header">2018 – 2022 | Technical University of Moldova</div>
+                    <div class="education-details">Faculty of Computers, Informatics and Microelectronics, Software Engineering Department</div>
+                    
+                    <div class="project-title">Personal Projects:</div>
+                    <div class="bullet-point">Developed a microservices-based system using Angular for the frontend and .NET for the backend, integrating three.js for 3D building models and Google API for 360 AR tours</div>
+                    <div class="bullet-point">Implemented machine learning features using Microsoft.ML trainers to match students with suitable faculties based on skills and preferences</div>
+                    <div class="bullet-point">Utilized various message brokers such as RabbitMQ, Kafka, ServiceBus for efficient communication between microservices and employed MongoDB and PostgreSQL for data storage</div>
+                    <div class="bullet-point">Conducted surveys among students for machine learning data collection</div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Professional Experience</div>
+                    
+                    <div class="job-header">03/2024 – Present | Full Stack Developer at BackstageIT | Blue10 (Netherlands)</div>
+                    <div class="project-title">SaaS Financial Platform Project:</div>
+                    <div class="bullet-point">Developed and maintained a SaaS platform for tracking software subscriptions and costs using Vue 3, .NET, and TypeScript</div>
+                    <div class="bullet-point">Built invoice processing systems, financial reporting dashboards, and user management portals with real-time data analysis</div>
+                    <div class="bullet-point">Implemented microservices architecture using Azure Functions, Service Bus, and CosmosDB for scalable data processing</div>
+                    <div class="bullet-point">Created complex algorithms and SQL procedures for data matching across multiple tables using views</div>
+                    <div class="bullet-point">Integrated GraphQL for main request scenarios and REST APIs for authentication handling</div>
+                    <div class="bullet-point">Deployed and managed infrastructure using Terraform and Azure DevOps YAML pipelines</div>
+                    <div class="bullet-point">Implemented background tasks for performance optimization and enhanced user experience</div>
+                    <div class="bullet-point">Collaborated in Agile/Scrum environment with 2-week sprint cycles and immediate issue resolution</div>
+                    <div class="bullet-point">Conducted unit testing with xUnit and provided mentoring through pair programming</div>
+
+                    <div class="job-header">05/2022 – 03/2024 | .Net Full Stack Developer at Amdaris</div>
+                    <div class="project-title">Law Project:</div>
+                    <div class="bullet-point">Specialized in UI development using Telerik components with MVC architecture in ASP.NET</div>
+                    <div class="bullet-point">Developed comprehensive data processing solutions for PDF, CSV, and XML files using C# for parsing, creation, and editing operations</div>
+                    <div class="bullet-point">Implemented NServiceBus message broker for efficient communication in distributed microservices architecture</div>
+                    <div class="bullet-point">Created and optimized SQL Server stored procedures and integrated Elasticsearch for enhanced search functionality</div>
+
+                    <div class="project-title">Energy Industry Project:</div>
+                    <div class="bullet-point">Contributed to complete system migration from legacy AngularJS-based ASPX MVC to modern Vue.js and .NET architecture</div>
+                    <div class="bullet-point">Designed and implemented complex data relationships using SQL Server with optimized column-based data structures</div>
+                    <div class="bullet-point">Configured Azure DevOps CI/CD pipelines for automated deployment and managed Azure services including Functions, AppServices, Storage, and Application Insights</div>
+                    <div class="bullet-point">Improved system performance and maintainability through modern framework adoption</div>
+
+                    <div class="project-title">Employee Management Project (Self-Employed Project):</div>
+                    <div class="bullet-point">Independently architected and developed full-stack employee management application using Angular and .NET</div>
+                    <div class="bullet-point">Conducted stakeholder meetings to gather requirements and proposed cost-effective alternative solutions based on budget, timeline, and quality criteria</div>
+                    <div class="bullet-point">Designed comprehensive technical architecture including deployment strategy, system structure, and logging mechanisms</div>
+                    <div class="bullet-point">Created intuitive UI/UX design tailored to client specifications and user needs</div>
+                    <div class="bullet-point">Implemented core HR features including time tracking, vacation management, and sick leave processing</div>
+                    <div class="bullet-point">Integrated PostgreSQL database with optimized queries for efficient data management</div>
+                    <div class="bullet-point">Developed reporting system</div>
+
+                    <div class="job-header">04/2021 – 05/2022 | .Net Full Stack Developer at XOR.ai</div>
+                    <div class="project-title">AI-Powered Recruitment Platform:</div>
+                    <div class="bullet-point">Developed and maintained configurable chatbot system using WebSockets, KnockoutJS, and Angular with real-time communication capabilities</div>
+                    <div class="bullet-point">Integrated multiple third-party platforms including Twilio, WhatsApp, Outlook, and Google services for comprehensive communication solutions</div>
+                    <div class="bullet-point">Collaborated closely with recruitment teams to implement API integrations from various platforms (GreenHouse, LinkedIn, HH.ru) for streamlined candidate communication workflows</div>
+                    <div class="bullet-point">Designed flexible configuration system allowing clients to customize chatbot behavior according to specific business requirements</div>
+                    <div class="bullet-point">Implemented error handling and logging mechanisms for improved system reliability</div>
+
+                    <div class="job-header">02/2019 – 04/2021 | Automation QA Engineer at XOR.ai</div>
+                    <div class="project-title">Test Automation & Quality Assurance:</div>
+                    <div class="bullet-point">Analyzed existing automation test coverage and identified critical gaps in testing procedures</div>
+                    <div class="bullet-point">Developed comprehensive automated test suites resulting in 70% increase in automation coverage</div>
+                    <div class="bullet-point">Developed automated test suites and quality assurance standards for continuous integration processes</div>
+                    <div class="bullet-point">Collaborated with development teams to establish quality standards and testing protocols</div>
+                    <div class="bullet-point">Created detailed test documentation and maintained test case repositories for team knowledge sharing</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
